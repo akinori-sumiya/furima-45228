@@ -1,5 +1,7 @@
 class ItemsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update]
+  before_action :set_item, only: [:show, :edit, :update]
+  before_action :redirect_if_not_owner, only: [:edit, :update]
 
   def index
     @items = Item.order('created_at DESC')
@@ -20,17 +22,31 @@ class ItemsController < ApplicationController
   end
 
   def show
-    @item = Item.find(params[:id])
   end
 
   def edit
-    @item = Item.find(params[:id])
+  end
+
+  def update
+    if @item.update(item_params)
+      redirect_to item_path(@item)
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 end
 
 private
 
+def set_item
+  @item = Item.find(params[:id])
+end
+
 def item_params
   params.require(:item).permit(:image, :name, :info, :category_id, :sales_status_id, :shipping_fee_payer_id, :prefecture_id,
                                :scheduled_delivery_id, :price).merge(user_id: current_user.id)
+end
+
+def redirect_if_not_owner
+  redirect_to root_path unless current_user.id == @item.user_id
 end

@@ -3,4 +3,8 @@ class OrdersController < ApplicationController
     @item = Item.find(params[:item_id])
     @order_address = OrderAddress.new
   end
+
+  def create
+    binding.pry
+  end
 end

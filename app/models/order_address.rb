@@ -1,6 +1,7 @@
 class OrderAddress
   include ActiveModel::Model
-  attr_accessor :user_id, :item_id, :postal_code, :prefecture_id, :city, :addresses, :building, :phone_number, :token
+  attr_accessor :user_id, :item_id, :postal_code, :prefecture_id, :city, :addresses, :building, :phone_number,
+                :token
 
   # ここにバリデーションを記述します
   with_options presence: true do
@@ -8,7 +9,7 @@ class OrderAddress
     validates :item_id
     validates :city
     validates :addresses
-    validates :token
+    validates :token # トークンのバリデーションを追加
   end
 
   validates :postal_code, presence: true, format: { with: /\A[0-9]{3}-[0-9]{4}\z/, message: 'is invalid. Include hyphen(-)' }

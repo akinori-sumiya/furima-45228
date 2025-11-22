@@ -1,6 +1,7 @@
 // turbo:loadイベントは、Turbo Driveによるページ遷移でも発火するため、
 // ページが完全に読み込まれたことを保証します。
-window.addEventListener("turbo:load", () => {
+
+const price = () => {
   // 価格入力フィールドの要素を取得
   const priceInput = document.getElementById("item-price");
 
@@ -30,4 +31,7 @@ window.addEventListener("turbo:load", () => {
       profitPrice.innerHTML = profit.toLocaleString();
     }
   });
-});
+};
+
+window.addEventListener("turbo:load", price);
+window.addEventListener("turbo:render", price);
